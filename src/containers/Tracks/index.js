@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { inject, observer, Observer } from "mobx-react";
 import get from "lodash/get";
 import axios from "axios";
 import { TrackCard } from "../../components/TrackCard";
@@ -20,8 +21,7 @@ const Wrapper = styled.div`
 
 class Tracks extends Component {
   state = {
-    tracks: [],
-    favoriteTracks: new Set()
+    tracks: []
   };
 
   componentWillMount = async () => {
@@ -45,28 +45,19 @@ class Tracks extends Component {
     }
   };
 
-  saveFavoriteTrack = trackId => {
-    const { favoriteTracks } = this.state;
-    favoriteTracks.add(trackId);
-    this.setState({
-      favoriteTracks
-    });
-  };
-
-  deleteFavoriteTrack = trackId => {
-    const { favoriteTracks } = this.state;
-    favoriteTracks.delete(trackId);
-    this.setState({
-      favoriteTracks
-    });
-  };
-
   render() {
-    const { tracks, favoriteTracks } = this.state;
-
+    const { tracks } = this.state;
+    const { FavoriteTracksStore } = this.props;
+    const favoriteTracksStore = new FavoriteTracksStore();
+    const {
+      saveFavoriteTrack,
+      deleteFavoriteTrack,
+      favoriteTracks
+    } = favoriteTracksStore;
+    console.log(this.props);
     return (
       <div>
-        <div>tracks</div>
+        <div>Tracks {JSON.stringify(favoriteTracks)}</div>
         <Wrapper>
           {tracks.map(track => {
             const { id, name } = track;
@@ -76,8 +67,8 @@ class Tracks extends Component {
                 image={get(track, "album.images[2].url")}
                 artistName={get(track, "artists[0].name", "")}
                 trackName={name}
-                saveFavoriteTrack={() => this.saveFavoriteTrack(id)}
-                deleteFavoriteTrack={() => this.deleteFavoriteTrack(id)}
+                saveFavoriteTrack={() => saveFavoriteTrack(id)}
+                deleteFavoriteTrack={() => deleteFavoriteTrack(id)}
                 isSelected={favoriteTracks.has(id)}
               />
             );
@@ -88,4 +79,4 @@ class Tracks extends Component {
   }
 }
 
-export default Tracks;
+export default inject("FavoriteTracksStore")(observer(Tracks));

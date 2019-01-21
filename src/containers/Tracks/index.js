@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import get from "lodash/get";
 import axios from "axios";
 import { inject, observer } from "mobx-react";
@@ -8,7 +9,15 @@ import { Typography, Button } from "@smooth-ui/core-sc";
 import { TracksWrapper } from "../../components/TracksWrapper/index";
 import { Header } from "../../components/Header";
 
-class Tracks extends Component {
+export class Tracks extends Component {
+  static propTypes = {
+    favoriteTracksStore: PropTypes.objectOf(PropTypes.shape).isRequired
+  };
+
+  static defaultProps = {
+    favoriteTracksStore: {}
+  };
+
   state = {
     tracks: []
   };

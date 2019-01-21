@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   grid-row-gap: 16px;
   @media (max-width: 700px) {
     grid-template-columns: auto;
+    justify-content: center;
     width: 100%;
     padding-left: 16px;
     padding-right: 16px;

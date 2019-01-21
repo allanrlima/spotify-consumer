@@ -17,6 +17,7 @@ export const TrackCard = ({
   artistName,
   trackName,
   saveFavoriteTrack,
+  deleteFavoriteTrack,
   isSelected
 }) => (
   <Card>
@@ -24,7 +25,7 @@ export const TrackCard = ({
     <ArtistName>{artistName}</ArtistName>
     <div>{trackName}</div>
     {isSelected ? (
-      <Button variant="green" onClick={saveFavoriteTrack}>
+      <Button variant="green" onClick={deleteFavoriteTrack}>
         SELECTED
       </Button>
     ) : (

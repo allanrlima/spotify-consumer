@@ -47,8 +47,17 @@ class Tracks extends Component {
 
   saveFavoriteTrack = trackId => {
     const { favoriteTracks } = this.state;
+    favoriteTracks.add(trackId);
     this.setState({
-      favoriteTracks: favoriteTracks.add(trackId)
+      favoriteTracks
+    });
+  };
+
+  deleteFavoriteTrack = trackId => {
+    const { favoriteTracks } = this.state;
+    favoriteTracks.delete(trackId);
+    this.setState({
+      favoriteTracks
     });
   };
 
@@ -68,6 +77,7 @@ class Tracks extends Component {
                 artistName={get(track, "artists[0].name", "")}
                 trackName={name}
                 saveFavoriteTrack={() => this.saveFavoriteTrack(id)}
+                deleteFavoriteTrack={() => this.deleteFavoriteTrack(id)}
                 isSelected={favoriteTracks.has(id)}
               />
             );

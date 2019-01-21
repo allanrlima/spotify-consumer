@@ -32,7 +32,7 @@ export class Home extends Component {
   };
 
   login = () => {
-    const clientId = "f3e5c5b3e44643ad9a67d45be2a42477";
+    const clientId = process.env.REACT_APP_CLIENT_ID_SPOTIFY;
     const currentUrl = window.location.href;
     const redirectUri = currentUrl;
 

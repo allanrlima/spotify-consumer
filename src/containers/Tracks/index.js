@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { inject, observer, Observer } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import get from "lodash/get";
 import axios from "axios";
+import { compose } from "recompose";
 import { TrackCard } from "../../components/TrackCard";
 import styled from "styled-components";
+import { Button } from "@smooth-ui/core-sc";
+import Recomendations from "../Recomendations/index";
 
 const Wrapper = styled.div`
   display: grid;
@@ -47,17 +50,21 @@ class Tracks extends Component {
 
   render() {
     const { tracks } = this.state;
-    const { FavoriteTracksStore } = this.props;
-    const favoriteTracksStore = new FavoriteTracksStore();
+    console.log(this.props);
+
+    const { favoriteTracksStore } = this.props;
+
     const {
+      favoriteTracks,
       saveFavoriteTrack,
-      deleteFavoriteTrack,
-      favoriteTracks
+      deleteFavoriteTrack
     } = favoriteTracksStore;
+
     console.log(this.props);
     return (
       <div>
-        <div>Tracks {JSON.stringify(favoriteTracks)}</div>
+        <div>Tracks {favoriteTracks}</div>
+        <Button>Show my Recomendations</Button>
         <Wrapper>
           {tracks.map(track => {
             const { id, name } = track;
@@ -69,7 +76,7 @@ class Tracks extends Component {
                 trackName={name}
                 saveFavoriteTrack={() => saveFavoriteTrack(id)}
                 deleteFavoriteTrack={() => deleteFavoriteTrack(id)}
-                isSelected={favoriteTracks.has(id)}
+                isSelected={favoriteTracks.includes(id)}
               />
             );
           })}
@@ -79,4 +86,7 @@ class Tracks extends Component {
   }
 }
 
-export default inject("FavoriteTracksStore")(observer(Tracks));
+export default compose(
+  inject("favoriteTracksStore"),
+  observer
+)(Tracks);

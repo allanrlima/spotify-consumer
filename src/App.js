@@ -6,25 +6,23 @@ import { Normalize } from "@smooth-ui/core-sc";
 import Home from "./containers/Home";
 import Tracks from "./containers/Tracks";
 import Recomendations from "./containers/Recomendations";
-import FavoriteTracksStore from "./stores/favoriteTracksStore";
+import favoriteTracksStore from "./stores/favoriteTracksStore";
 
 const stores = {
-  FavoriteTracksStore
+  favoriteTracksStore
 };
 
 class App extends Component {
   render() {
     return (
       <Provider {...stores}>
-        <div className="App">
-          <Router>
-            <div>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/tracks" component={Tracks} />
-              <Route exact path="/recomendations" component={Recomendations} />
-            </div>
-          </Router>
-        </div>
+        <Router>
+          <div>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/tracks" component={Tracks} />
+            <Route exact path="/recomendations" component={Recomendations} />
+          </div>
+        </Router>
       </Provider>
     );
   }

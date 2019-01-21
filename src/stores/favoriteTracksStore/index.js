@@ -1,14 +1,14 @@
 import { observable, action, decorate } from "mobx";
 
 class FavoriteTracksStore {
-  favoriteTracks = new Set();
+  favoriteTracks = [];
 
   saveFavoriteTrack = trackId => {
-    this.favoriteTracks.add(trackId);
+    this.favoriteTracks = [trackId, ...this.favoriteTracks];
   };
 
   deleteFavoriteTrack = trackId => {
-    this.favoriteTracks.delete(trackId);
+    this.favoriteTracks = this.favoriteTracks.filter(item => item !== trackId);
   };
 }
 
@@ -18,4 +18,4 @@ decorate(FavoriteTracksStore, {
   deleteFavoriteTrack: action
 });
 
-export default FavoriteTracksStore;
+export default new FavoriteTracksStore();

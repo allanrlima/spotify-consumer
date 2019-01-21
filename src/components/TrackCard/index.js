@@ -18,20 +18,25 @@ export const TrackCard = ({
   trackName,
   saveFavoriteTrack,
   deleteFavoriteTrack,
-  isSelected
+  isSelected,
+  hasSelectButton
 }) => (
   <Card>
     <Image src={image} />
     <ArtistName>{artistName}</ArtistName>
     <div>{trackName}</div>
-    {isSelected ? (
-      <Button variant="green" onClick={deleteFavoriteTrack}>
-        SELECTED
-      </Button>
-    ) : (
-      <Button variant="light" onClick={saveFavoriteTrack}>
-        Select as favorite
-      </Button>
+    {hasSelectButton && (
+      <>
+        {isSelected ? (
+          <Button variant="green" onClick={deleteFavoriteTrack}>
+            SELECTED
+          </Button>
+        ) : (
+          <Button variant="light" onClick={saveFavoriteTrack}>
+            Select as favorite
+          </Button>
+        )}
+      </>
     )}
   </Card>
 );

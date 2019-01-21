@@ -1,26 +1,12 @@
 import React, { Component } from "react";
-import { inject, observer } from "mobx-react";
 import get from "lodash/get";
 import axios from "axios";
+import { inject, observer } from "mobx-react";
 import { compose } from "recompose";
 import { TrackCard } from "../../components/TrackCard";
-import styled from "styled-components";
-import { Button } from "@smooth-ui/core-sc";
-import Recomendations from "../Recomendations/index";
-
-const Wrapper = styled.div`
-  display: grid;
-  width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-  grid-template-columns: repeat(4, 200px [col-start]);
-  justify-content: space-between;
-  grid-row-gap: 16px;
-  @media (max-width: 700px) {
-    grid-template-columns: auto;
-    width: 100%;
-  }
-`;
+import { Typography, Button } from "@smooth-ui/core-sc";
+import { TracksWrapper } from "../../components/TracksWrapper/index";
+import { Header } from "../../components/Header";
 
 class Tracks extends Component {
   state = {
@@ -32,14 +18,13 @@ class Tracks extends Component {
 
     const instance = axios.create({
       baseURL: "https://api.spotify.com",
-      timeout: 1000,
+      timeout: 10000,
       headers: { Authorization: "Bearer " + token }
     });
 
     try {
       const response = await instance.get("v1/me/top/tracks");
       const { items: tracks } = response.data;
-      console.log(tracks);
       this.setState({
         tracks
       });
@@ -50,9 +35,8 @@ class Tracks extends Component {
 
   render() {
     const { tracks } = this.state;
-    console.log(this.props);
 
-    const { favoriteTracksStore } = this.props;
+    const { favoriteTracksStore, history } = this.props;
 
     const {
       favoriteTracks,
@@ -60,12 +44,20 @@ class Tracks extends Component {
       deleteFavoriteTrack
     } = favoriteTracksStore;
 
-    console.log(this.props);
     return (
       <div>
-        <div>Tracks {favoriteTracks}</div>
-        <Button>Show my Recomendations</Button>
-        <Wrapper>
+        <Header>
+          <Typography color={"#fff"} variant="h6">
+            Select your favorite tracks, to generate good recommendations
+          </Typography>
+          <Button
+            variant="success"
+            onClick={() => history.push("recomendations")}
+          >
+            Click here to see recommendations
+          </Button>
+        </Header>
+        <TracksWrapper>
           {tracks.map(track => {
             const { id, name } = track;
             return (
@@ -77,10 +69,11 @@ class Tracks extends Component {
                 saveFavoriteTrack={() => saveFavoriteTrack(id)}
                 deleteFavoriteTrack={() => deleteFavoriteTrack(id)}
                 isSelected={favoriteTracks.includes(id)}
+                hasSelectButton
               />
             );
           })}
-        </Wrapper>
+        </TracksWrapper>
       </div>
     );
   }

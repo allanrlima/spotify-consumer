@@ -4,10 +4,13 @@ import get from "lodash/get";
 import { inject, observer } from "mobx-react";
 import { compose } from "recompose";
 import { TrackCard } from "../../components/TrackCard";
-import { Typography, Button } from "@smooth-ui/core-sc";
+import { Typography, Button, Alert } from "@smooth-ui/core-sc";
 import { TracksWrapper } from "../../components/TracksWrapper/index";
 import { Header } from "../../components/Header";
-import { instance } from "../../services/axiosIntance";
+import { instance } from "../../services/helpers";
+import { Logout } from "../../components/Logout";
+import { Warning } from "../../components/Warning";
+import { Loading } from "../../components/Loading";
 
 export class Tracks extends Component {
   static propTypes = {
@@ -19,7 +22,8 @@ export class Tracks extends Component {
   };
 
   state = {
-    tracks: []
+    tracks: [],
+    isLoading: true
   };
 
   componentWillMount = () => {
@@ -36,11 +40,15 @@ export class Tracks extends Component {
     } catch (error) {
       const { history } = this.props;
       history.push("/");
+    } finally {
+      this.setState({
+        isLoading: false
+      });
     }
   };
 
   render() {
-    const { tracks } = this.state;
+    const { tracks, isLoading } = this.state;
 
     const { favoriteTracksStore, history } = this.props;
 
@@ -55,7 +63,7 @@ export class Tracks extends Component {
       <div>
         <Header>
           <Typography color={"#fff"} variant="h6">
-            Select your favorite tracks, to generate good recommendations
+            Select your 5 favorite tracks, to generate good recommendations
           </Typography>
           <Button
             variant="success"
@@ -67,6 +75,9 @@ export class Tracks extends Component {
               : "Select one track at least, to see recommendations"}
           </Button>
         </Header>
+        {favoriteTracksLength === 5 && (
+          <Warning text="You already selected 5 tracks!" />
+        )}
         <TracksWrapper>
           {tracks.map(track => {
             const { id, name } = track;
@@ -84,6 +95,8 @@ export class Tracks extends Component {
             );
           })}
         </TracksWrapper>
+        <Logout />
+        {isLoading && <Loading />}
       </div>
     );
   }

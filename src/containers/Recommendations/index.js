@@ -6,11 +6,14 @@ import { TrackCard } from "../../components/TrackCard";
 import { Typography, Button } from "@smooth-ui/core-sc";
 import { TracksWrapper } from "../../components/TracksWrapper";
 import { Header } from "../../components/Header";
-import { instance } from "../../services/axiosIntance";
+import { instance } from "../../services/helpers";
+import { Logout } from "../../components/Logout/index";
+import { Loading } from "../../components/Loading/index";
 
 export class Recommendations extends React.Component {
   state = {
-    tracks: []
+    tracks: [],
+    isLoading: true
   };
 
   componentWillMount = async () => {
@@ -35,11 +38,15 @@ export class Recommendations extends React.Component {
     } catch (error) {
       const { history } = this.props;
       history.push("/");
+    } finally {
+      this.setState({
+        isLoading: false
+      });
     }
   };
 
   render() {
-    const { tracks } = this.state;
+    const { tracks, isLoading } = this.state;
 
     const { favoriteTracksStore, history } = this.props;
 
@@ -70,6 +77,8 @@ export class Recommendations extends React.Component {
             );
           })}
         </TracksWrapper>
+        <Logout />
+        {isLoading && <Loading />}
       </div>
     );
   }

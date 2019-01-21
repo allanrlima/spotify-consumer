@@ -32,11 +32,11 @@ export class Home extends Component {
   };
 
   login = () => {
-    const clientId = process.env.REACT_APP_CLIENT_ID_SPOTIFY;
+    const clientId = "f3e5c5b3e44643ad9a67d45be2a42477";
     const currentUrl = window.location.href;
     const redirectUri = currentUrl;
 
-    const scopes = ["user-read-email"];
+    const scopes = ["user-read-email", "user-top-read"];
 
     const url =
       `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}` +

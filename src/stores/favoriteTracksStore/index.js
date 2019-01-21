@@ -4,7 +4,11 @@ class FavoriteTracksStore {
   favoriteTracks = [];
 
   saveFavoriteTrack = trackId => {
-    this.favoriteTracks = [trackId, ...this.favoriteTracks];
+    if (this.favoriteTracks.length <= 4) {
+      this.favoriteTracks = [trackId, ...this.favoriteTracks];
+    } else {
+      window.scrollTo(0, 0);
+    }
   };
 
   deleteFavoriteTrack = trackId => {

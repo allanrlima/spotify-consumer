@@ -1,15 +1,30 @@
 import React, { Component } from "react";
 import { Provider, observer } from "mobx-react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch
+} from "react-router-dom";
 import "./App.css";
 import { Normalize } from "@smooth-ui/core-sc";
 import Home from "./containers/Home";
 import Tracks from "./containers/Tracks";
-import Recomendations from "./containers/Recomendations";
+import Recommendations from "./containers/Recommendations";
 import favoriteTracksStore from "./stores/favoriteTracksStore";
 
 const stores = {
   favoriteTracksStore
+};
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const token = localStorage.getItem("spotify-token");
+  return (
+    <Route
+      {...rest}
+      render={props => (token ? <Component {...props} /> : <Redirect to="/" />)}
+    />
+  );
 };
 
 class App extends Component {
@@ -19,11 +34,16 @@ class App extends Component {
         <div>
           <Normalize />
           <Router>
-            <div>
+            <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/tracks" component={Tracks} />
-              <Route exact path="/recomendations" component={Recomendations} />
-            </div>
+              <PrivateRoute exact path="/tracks" component={Tracks} />
+              <PrivateRoute
+                exact
+                path="/recommendations"
+                component={Recommendations}
+              />
+              <Route component={Home} />
+            </Switch>
           </Router>
         </div>
       </Provider>

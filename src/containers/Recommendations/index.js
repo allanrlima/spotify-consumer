@@ -8,7 +8,7 @@ import axios from "axios";
 import { TracksWrapper } from "../../components/TracksWrapper";
 import { Header } from "../../components/Header";
 
-class Recomendations extends React.Component {
+class Recommendations extends React.Component {
   state = {
     tracks: []
   };
@@ -21,7 +21,7 @@ class Recomendations extends React.Component {
       history.push("tracks");
     }
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("spotify-token");
 
     const instance = axios.create({
       baseURL: "https://api.spotify.com",
@@ -81,4 +81,4 @@ class Recomendations extends React.Component {
 export default compose(
   inject("favoriteTracksStore"),
   observer
-)(Recomendations);
+)(Recommendations);

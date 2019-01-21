@@ -20,7 +20,7 @@ class Home extends Component {
     if (window.location.hash) {
       const accessToken = this.getHashValue("access_token");
       if (accessToken) {
-        localStorage.setItem("token", accessToken);
+        localStorage.setItem("spotify-token", accessToken);
         this.props.history.push("tracks");
       }
     }
@@ -33,7 +33,8 @@ class Home extends Component {
 
   login = () => {
     const clientId = "f3e5c5b3e44643ad9a67d45be2a42477";
-    const redirectUri = "http://localhost:3000/";
+    const currentUrl = window.location.href;
+    const redirectUri = currentUrl;
 
     const scopes = ["user-read-email"];
 
@@ -49,9 +50,9 @@ class Home extends Component {
       <Wrapper>
         <Card>
           <Typography variant="h3">Authentication</Typography>
-          <div>
-            Click the button to authorize to get your top track on the spotify
-          </div>
+          <Typography variant="h6">
+            Click the button to authorize to get your top tracks on the spotify
+          </Typography>
           <Button onClick={this.login} variant="success">
             Login
           </Button>

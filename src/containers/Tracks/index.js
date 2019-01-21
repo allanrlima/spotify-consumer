@@ -23,7 +23,7 @@ export class Tracks extends Component {
   };
 
   componentWillMount = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("spotify-token");
 
     const instance = axios.create({
       baseURL: "https://api.spotify.com",
@@ -38,7 +38,8 @@ export class Tracks extends Component {
         tracks
       });
     } catch (error) {
-      console.log(error);
+      const { history } = this.props;
+      history.push("/");
     }
   };
 
@@ -53,6 +54,7 @@ export class Tracks extends Component {
       deleteFavoriteTrack
     } = favoriteTracksStore;
 
+    const favoriteTracksLength = favoriteTracks.length;
     return (
       <div>
         <Header>
@@ -61,9 +63,12 @@ export class Tracks extends Component {
           </Typography>
           <Button
             variant="success"
-            onClick={() => history.push("recomendations")}
+            onClick={() => history.push("recommendations")}
+            disabled={favoriteTracksLength === 0}
           >
-            Click here to see recommendations
+            {favoriteTracksLength
+              ? "Click here to see recommendations"
+              : "Select one track at least, to see recommendations"}
           </Button>
         </Header>
         <TracksWrapper>

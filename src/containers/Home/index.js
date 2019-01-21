@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   padding: 16px;
 `;
 
-class Home extends Component {
+export class Home extends Component {
   state = {
     acessToken: null
   };
@@ -21,7 +21,7 @@ class Home extends Component {
       const accessToken = this.getHashValue("access_token");
       if (accessToken) {
         localStorage.setItem("spotify-token", accessToken);
-        this.props.history.push("tracks");
+        window.location = "/tracks";
       }
     }
   }

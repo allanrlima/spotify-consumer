@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Tracks } from ".";
+import { Recommendations } from ".";
 
 const props = {
   favoriteTracksStore: {
@@ -8,8 +8,8 @@ const props = {
   }
 };
 
-describe("Game", () => {
+describe("Recommendations", () => {
   it("renders correctly", () => {
-    shallow(<Tracks {...props} />);
+    shallow(<Recommendations {...props} />);
   });
 });
